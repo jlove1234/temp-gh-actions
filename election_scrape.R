@@ -39,7 +39,6 @@ for (col in 2:(ncol(table_content) - 1)) {
 }
 
 # Write the table 
-write.csv(table_content, "/workspaces/temp-gh-actions/data/table_real.csv", row.names = FALSE)
-
+write.csv(table_content, "/workspaces/temp-gh-actions/data/table_real.csv", row.names = FALSE)  
 
 

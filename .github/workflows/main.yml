@@ -24,7 +24,6 @@ jobs:
         R -e 'install.packages("data.table")'
         R -e 'install.packages("rvest")'
         R _e 'install.packages("tidyr")'
-        library(rvest) 
 
     # Run R script
     - name: Scrape

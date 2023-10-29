@@ -2,7 +2,7 @@
 
 library(tidyverse)
 library(rvest)
-library(janitor)
+library(data.table)
 
 #nse top gainers
 

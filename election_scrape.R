@@ -4,8 +4,8 @@ library(dplyr)
 library(data.table)
 
 # Create the 'data' directory if it doesn't exist
-if (!dir.exists("/workspaces/temp-gh-actions/data/")) {
-  dir.create("/workspaces/temp-gh-actions/data/", recursive = TRUE)
+if (!dir.exists("data")) {
+  dir.create("data")
 }
 
 # Read the HTML content of the website
@@ -28,14 +28,7 @@ cols_to_convert <- 2:ncol(table_content)  # Exclude the first column
 
 # Handle NAs during conversion and convert the selected columns to integers
 table_content[cols_to_convert] <- lapply(table_content[cols_to_convert], function(x) {
-  if (all(!is.na(as.numeric(x)))) {
-    as.integer(x)
-  } else {
-    # Handle NAs or non-numeric values here if needed
-    # Example: Replace NAs with 0
-    x[is.na(x)] <- 0
-    x
-  }
+  as.integer(as.character(x))
 })
 
 # Calculate the "VoteTotal" column
@@ -47,11 +40,6 @@ for (col in 2:(ncol(table_content) - 1)) {
   table_content[, new_col_name] <- (table_content[, col] / table_content$VoteTotal) * 100
 }
 
-# Try to write the table to the CSV file with error handling
-tryCatch({
-  write.csv(table_content, "/workspaces/temp-gh-actions/data/table_real.csv", row.names = FALSE)
-}, error = function(e) {
-  cat("Error writing the CSV file:", conditionMessage(e), "\n")
-})
-
+# Write the table to the CSV file
+write.csv(table_content, "data/table_real.csv", row.names = FALSE)
 

@@ -20,10 +20,9 @@ jobs:
     # Set-up R
     - name: Install packages
       run: |
-        R -e 'install.packages("dplyr")'
+        R -e 'install.packages("tidyverse")'
         R -e 'install.packages("data.table")'
         R -e 'install.packages("rvest")'
-        R _e 'install.packages("tidyr")'
 
     # Run R script
     - name: Scrape

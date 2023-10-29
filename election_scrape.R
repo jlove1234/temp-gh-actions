@@ -1,9 +1,10 @@
-library(rvest) 
+library(rvest)
 library(tidyr)
 library(dplyr)
 library(data.table)
 
-
+# Create the 'data' directory if it doesn't exist
+dir.create("/workspaces/temp-gh-actions/data", showWarnings = FALSE, recursive = TRUE)
 
 # Read the HTML content of the website 
 webpage <- read_html("https://electionresults.sos.mn.gov/Results/Index?ersElectionId=156&scenario=ResultsByPrecinctCrosstab&OfficeInElectionId=33119&QuestionId=0") 
@@ -25,9 +26,10 @@ colnames(table_content) <- gsub("NP", "", colnames(table_content))
 # Identify the columns you want to convert to integers
 cols_to_convert <- 2:ncol(table_content)  # Exclude the first column
 
-# Convert the selected columns to integers
-table_content[cols_to_convert] <- lapply(table_content[cols_to_convert], as.integer)
+# Handle NAs during conversion and convert the selected columns to integers
+table_content[cols_to_convert] <- lapply(table_content[cols_to_convert], function(x) as.integer(x, na.rm = TRUE))
 
+# Calculate the "VoteTotal" column
 table_content$VoteTotal <- rowSums(table_content[, -1])  # Exclude the first column
 
 # Calculate the percentage for each cell based on the "VoteTotal" column
@@ -36,7 +38,8 @@ for (col in 2:(ncol(table_content) - 1)) {
   table_content[, new_col_name] <- (table_content[, col] / table_content$VoteTotal) * 100
 }
 
-# Print the table 
-write.csv(table_content, "/workspaces/temp-gh-actions/data/table_real.csv", row.names=FALSE)
+# Write the table 
+write.csv(table_content, "/workspaces/temp-gh-actions/data/table_real.csv", row.names = FALSE)
+
 
 

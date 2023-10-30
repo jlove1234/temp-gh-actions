@@ -9,7 +9,7 @@ if (!dir.exists("data")) {
 }
 
 # Read the HTML content of the website
-webpage <- read_html("https://electionresults.sos.mn.gov/Results/Index?ersElectionId=156&scenario=ResultsByPrecinctCrosstab&OfficeInElectionId=33119&QuestionId=0")
+webpage <- read_html("https://electionresults.sos.mn.gov/results/Index?ErsElectionId=156&scenario=LocalSchoolDistrict&DistrictId=281&show=Go")
 
 # Select the table using CSS selector
 table_node <- html_nodes(webpage, "table")

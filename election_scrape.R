@@ -11,11 +11,11 @@ if (!dir.exists("data")) {
 # Read the HTML content of the website
 webpage <- read_html("https://electionresults.sos.mn.gov/results/Index?ErsElectionId=156&scenario=LocalSchoolDistrict&DistrictId=281&show=Go")
 
-# Select the table using CSS selector
-table_node <- html_nodes(webpage, "table")
+# Select the table using CSS selector 
+table_node <- html_nodes(webpage, "table") 
 
-# Extract the table content
-table_content <- html_table(table_node)[[3]]
+# Extract the table content 
+table_content <- html_table(table_node)[[3]] 
 
 table_content[] <- lapply(table_content, function(cell) {
   sub("St. Louis: ", "", cell)
@@ -23,15 +23,14 @@ table_content[] <- lapply(table_content, function(cell) {
 
 colnames(table_content) <- gsub("NP", "", colnames(table_content))
 
+# Assuming your data frame is named "table_content"
+
 # Identify the columns you want to convert to integers
 cols_to_convert <- 2:ncol(table_content)  # Exclude the first column
 
-# Handle NAs during conversion and convert the selected columns to integers
-table_content[cols_to_convert] <- lapply(table_content[cols_to_convert], function(x) {
-  as.integer(as.character(x))
-})
+# Convert the selected columns to integers
+table_content[cols_to_convert] <- lapply(table_content[cols_to_convert], as.integer)
 
-# Calculate the "VoteTotal" column
 table_content$VoteTotal <- rowSums(table_content[, -1])  # Exclude the first column
 
 # Calculate the percentage for each cell based on the "VoteTotal" column

@@ -31,11 +31,6 @@ jobs:
       # Upload the CSV file to AWS S3
     - name: Upload to AWS S3
       run: |
-          aws s3 cp data/table_real.csv s3://
-  
-          # Upload the CSV file to AWS S3
-    - name: Upload to AWS S3
-      run: |
         aws s3 cp data/table_real.csv s3://jlovebucket-public/inflation-map/
 
       env:          

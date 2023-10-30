@@ -1,21 +1,21 @@
-library(rvest)
+library(rvest) 
 library(tidyr)
 library(dplyr)
 library(data.table)
 
-# Create the 'data' directory if it doesn't exist
-if (!dir.exists("data")) {
-  dir.create("data")
-}
 
-# Read the HTML content of the website
-webpage <- read_html("https://electionresults.sos.mn.gov/results/Index?ErsElectionId=156&scenario=LocalSchoolDistrict&DistrictId=281&show=Go")
+
+# Read the HTML content of the website 
+webpage <- read_html("https://electionresults.sos.mn.gov/Results/Index?ersElectionId=156&scenario=ResultsByPrecinctCrosstab&OfficeInElectionId=33127&QuestionId=0") 
 
 # Select the table using CSS selector 
 table_node <- html_nodes(webpage, "table") 
 
 # Extract the table content 
 table_content <- html_table(table_node)[[3]] 
+
+# Remove last row
+table_content <- table_content %>% filter(row_number() <= n()-1)
 
 table_content[] <- lapply(table_content, function(cell) {
   sub("St. Louis: ", "", cell)

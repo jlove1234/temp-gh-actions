@@ -6,8 +6,7 @@ library(data.table)
 
 
 # Read the HTML content of the website 
-webpage <- read_html("https://electionresults.sos.mn.gov/Results/Index?ersElectionId=156&scenario=ResultsByPrecinctCrosstab&OfficeInElectionId=33120&QuestionId=0")
-# Select the table using CSS selector 
+webpage <- read_html("https://electionresults.sos.mn.gov/Results/Index?ersElectionId=156&scenario=ResultsByPrecinctCrosstab&OfficeInElectionId=33119&QuestionId=0")
 table_node <- html_nodes(webpage, "table") 
 
 # Extract the table content 

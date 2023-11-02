@@ -26,14 +26,14 @@ jobs:
           R -e 'install.packages("data.table", lib = Sys.getenv("R_LIBS_USER"), repos = "https://cran.rstudio.com/")'
           R -e 'install.packages("rvest", lib = Sys.getenv("R_LIBS_USER"), repos = "https://cran.rstudio.com/")'
         # Cache R packages
-        - name: Cache R packages
-          uses: actions/cache@v2
-          with:
-            path: ${{ runner.workspace }}/Rpackages
-            key: ${{ runner.os }}-R-${{ hashFiles('**/DESCRIPTION') }}
-            restore-keys: |
-              ${{ runner.os }}-R-
-
+      - name: Cache R packages
+        uses: actions/cache@v2
+        with:
+          path: ${{ runner.workspace }}/Rpackages
+          key: ${{ runner.os }}-R-${{ hashFiles('**/DESCRIPTION') }}
+          restore-keys: |
+            ${{ runner.os }}-R-
+            
       # Run R script
       - name: Scrape
         run: Rscript election_scrape.R

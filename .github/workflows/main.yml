@@ -28,6 +28,9 @@ jobs:
     - name: Scrape
       run: Rscript election_scrape.R
 
+    - name: Scrape city results
+      run: Rscriprt city_results.R
+
       # Upload the CSV file to AWS S3
     - name: Upload to AWS S3
       run: |

@@ -23,6 +23,9 @@ jobs:
         R -e 'install.packages("tidyverse")'
         R -e 'install.packages("data.table")'
         R -e 'install.packages("rvest")'
+    
+    - name: Check out repository
+      uses: actions/checkout@v3
 
     # Run R script
     - name: Scrape

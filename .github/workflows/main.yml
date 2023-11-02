@@ -31,16 +31,6 @@ jobs:
     - name: Scrape city results
       run: Rscript city_results.R
 
-      # Upload the CSV file to AWS S3
-    - name: Upload to AWS S3
-      run: |
-        aws s3 cp data/table_real.csv s3://jlovebucket-public/inflation-map/
-
-      env:          
-       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-       AWS_REGION: ${{ secrets.AWS_REGION }}
-
  # Add new files in data folder, commit along with other modified files, push
     - name: Commit files
       run: |

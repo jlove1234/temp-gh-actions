@@ -46,6 +46,9 @@ jobs:
     - name: Scrape school referendum Q1
       run: Rscript SRQ1mapscrape.R
 
+    - name: Scrape school referendum Q2
+      run: Rscript SRQ2mapscrape.R
+
  # Add new files in data folder, commit along with other modified files, push
     - name: Commit files
       run: |

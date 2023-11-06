@@ -34,6 +34,9 @@ jobs:
     - name: Scrape city results
       run: Rscript city_results.R
 
+    - name: Scrape school district results
+      run: Rscript school_results_new_layout.R
+
     - name: Scrape school board at large map
       run: Rscript SBatlargemapscrape.R
 

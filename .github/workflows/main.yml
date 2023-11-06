@@ -40,6 +40,9 @@ jobs:
     - name: Scrape school board at large map
       run: Rscript SBD2mapscrape.R
 
+    - name: Scrape school board at large map
+      run: Rscript SBD3mapscrape.R 
+
  # Add new files in data folder, commit along with other modified files, push
     - name: Commit files
       run: |

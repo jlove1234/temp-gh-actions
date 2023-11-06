@@ -49,6 +49,21 @@ jobs:
     - name: Scrape school referendum Q2
       run: Rscript SRQ2mapscrape.R
 
+    - name: Scrape city at large for map
+      run: Rscript city_atlarge_map.R
+
+    - name: Scrape city district 1 for map
+      run: city_district1_map.R
+
+    - name: Scrape city district 3 for map
+      run: city_district3_map.R
+
+    - name: Scrape city district 4 for map
+      run: city_district4_map.R
+    
+    - name: Scrape city district 5 for map
+      run: city_district5_map.R
+
  # Add new files in data folder, commit along with other modified files, push
     - name: Commit files
       run: |

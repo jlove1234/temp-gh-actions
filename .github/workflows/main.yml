@@ -35,7 +35,7 @@ jobs:
       run: Rscript city_results.R
 
     - name: Scrape school board at large map
-      run: SBatlargemapscrape.R
+      run: Rscript SBatlargemapscrape.R
 
  # Add new files in data folder, commit along with other modified files, push
     - name: Commit files

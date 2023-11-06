@@ -56,7 +56,7 @@ jobs:
       run: Rscript city_district1_map.R
 
     - name: Scrape city district 3 for map
-      run: Rscript city_districte_map.R
+      run: Rscript city_district3_map.R
 
     - name: Scrape city district 4 for map
       run: Rscript city_district4_map.R

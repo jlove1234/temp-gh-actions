@@ -19,6 +19,10 @@ table_content[] <- lapply(table_content, function(cell) {
   sub("St. Louis: ", "", cell)
 })
 
+table_content[] <- lapply(table_content, function(cell) {
+  sub("ISD #709 - ", "", cell)
+})
+
 colnames(table_content) <- gsub("NP", "", colnames(table_content))
 
 # Assuming your data frame is named "table_content"
@@ -36,6 +40,10 @@ for (col in 2:(ncol(table_content) - 1)) {
   new_col_name <- paste0(names(table_content)[col], "_Percentage")
   table_content[, new_col_name] <- (table_content[, col] / table_content$VoteTotal) * 100
 }
+
+table_content <- table_content %>%
+  mutate(across(everything(), ~ifelse(. == "NaN", 0, .), .names = "{.col}_New"))
+
 
 # Write the table to the CSV file
 write.csv(table_content, "data/table_real.csv", row.names = FALSE)

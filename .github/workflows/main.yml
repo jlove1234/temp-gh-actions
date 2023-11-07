@@ -10,8 +10,7 @@ on:
 jobs: 
   autoscrape:
     # The type of runner that the job will run on
-    runs-on:
-      labels: macos-latest-xl -arm64
+    runs-on: macos-latest-xl
 
     # Load repo and install R
     steps:

@@ -1,0 +1,33 @@
+name: Trigger nifty50scrape Workflow
+
+on:
+  workflow_run:
+    workflows:
+      - 'nifty50scrape'
+    types:
+      - completed
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger the nifty50scrape workflow
+        uses: actions/github-script@v4
+        with:
+          script: |
+            const { data: workflowRuns } = await github.actions.listRepoWorkflowRuns({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_file: '.github/workflows/main.yml',  # Update to match your actual main workflow file path
+            });
+
+            if (workflowRuns.total_count === 0 || workflowRuns.workflow_runs[0].status === 'completed') {
+              await github.actions.reRunWorkflow({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                run_id: context.runId,
+              });
+            }
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

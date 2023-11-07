@@ -1,8 +1,8 @@
-name: nifty50scrape2
+name: nifty50scrape3
 
 on:
   workflow_run:
-    workflows: ["nifty50scrape"]
+    workflows: ["nifty50scrape2"]
     types:
       - completed
 
@@ -99,7 +99,7 @@ jobs:
       TOKEN=${{ secrets.GITHUB_TOKEN }}
       REPO_OWNER=jlove1234
       REPO_NAME=TEMP-GH-ACTIONS
-      WORKFLOW_NAME=nifty50scrape3
+      WORKFLOW_NAME=nifty50scrape2
        curl -X POST \
          -H "Authorization: token $TOKEN" \
          -H "Accept: application/vnd.github.v3+json" \

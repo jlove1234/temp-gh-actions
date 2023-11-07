@@ -1,93 +1,48 @@
-# Hourly scraping
+# Hourly scrapingg
 name: nifty50scrape
 
+
+# Controls when the action will run.
 on:
-  push:
-    branches:
-      - main
+ schedule:
+    - cron: '*/2 * * * *'
+
 
 jobs:
-  autoscrape:
-    runs-on: macos-latest
+ autoscrape:
+   # The type of runner that the job will run on
+   runs-on: macos-13
 
-    steps:
-    - uses: actions/checkout@v2
 
-    # Set up caching for R and packages
-    - name: Set up R and cache
-      run: |
-        mkdir -p $HOME/R
-        wget -q -O - https://github.com/jlove1234/temp-gh-actions/cache/R-VERSION.tar.gz | tar -xzf - -C $HOME/R
-        echo "export PATH=\$HOME/R/bin:\$PATH" >> $GITHUB_ENV
+   # Load repo and install R
+   steps:
+   - uses: actions/checkout@v2
+   - uses: r-lib/actions/setup-r@v2
 
-    # Restore the cache for R packages
-    - name: Restore R package cache
-      uses: actions/cache@v2
-      with:
-        path: ${{ runner.workspace }}/cache/packages  # Define the path to the packages cache
-        key: r-${{ runner.os }}-${{ hashFiles('**/DESCRIPTION') }}
-        restore-keys: |
-          r-${{ runner.os }}-
 
-    # Install R packages
-    - name: Install packages
-      run: |
-        R -e 'install.packages("tidyverse", repos="https://cran.rstudio.com/")'
-        R -e 'install.packages("data.table", repos="https://cran.rstudio.com/")'
-        R -e 'install.packages("rvest", repos="https://cran.rstudio.com/")'
+   # Set-up R
+   - name: Install packages
+     run: |
+       R -e 'install.packages("tidyverse")'
+       R -e 'install.packages("data.table")'
+       R -e 'install.packages("rvest")'
+  
+   - name: Check out repository
+     uses: actions/checkout@v3
 
-    # Continue with the rest of your workflow steps
-    - name: Check out repository
-      uses: actions/checkout@v3
 
-    # Run R script
-    - name: Scrape
-      run: Rscript election_scrape.R
+   # Run R script
+   - name: Scrape
+     run: Rscript election_scrape.R
 
-    - name: Scrape city results
-      run: Rscript city_results.R
 
-    - name: Scrape school district results
-      run: Rscript school_results_new_layout.R
+   - name: Scrape city results
+     run: Rscript city_results.R
 
-    - name: Scrape school board at large map
-      run: Rscript SBatlargemapscrape.R
 
-    - name: Scrape school board district 2
-      run: Rscript SBD2mapscrape.R
+   - name: Scrape school district results
+     run: Rscript school_results_new_layout.R
 
-    - name: Scrape school board district 3
-      run: Rscript SBD3mapscrape.R 
 
-    - name: Scrape school referendum Q1
-      run: Rscript SRQ1mapscrape.R
-
-    - name: Scrape school referendum Q2
-      run: Rscript SRQ2mapscrape.R
-
-    - name: Scrape city at large for map
-      run: Rscript city_atlarge_map.R
-
-    - name: Scrape city district 1 for map
-      run: Rscript city_district1_map.R
-
-    - name: Scrape city district 3 for map
-      run: Rscript city_district3_map.R
-
-    - name: Scrape city district 4 for map
-      run: Rscript city_district4_map.R
-    
-    - name: Scrape city district 5 for map
-      run: Rscript city_district5_map.R
-
-    # Add new files in the data folder, commit along with other modified files, push
-    - name: Commit files
-      run: |
-        git config --local user.name actions-user
-        git config --local user.email "actions@github.com"
-        git add data/*
-        git commit -am "GH ACTION Headlines $(date)"
-        git push origin main
-      env:
-        REPO_KEY: ${{secrets.GITHUB_TOKEN}}
-        username: github-actions
+   - name: Scrape school board at large map
+     run: Rscript SBatlargemapscrape.R

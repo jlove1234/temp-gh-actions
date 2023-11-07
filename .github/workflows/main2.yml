@@ -1,11 +1,10 @@
 name: nifty50scrape2
 
-
-# Controls when the action will run.
 on:
- push:
-   branches:
-     - main
+  workflow_run:
+    workflows: ["nifty50scrape"]
+    types:
+      - completed
 
 
 jobs:

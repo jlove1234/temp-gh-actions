@@ -99,12 +99,12 @@ jobs:
 - name: Trigger Another Workflow
   run: |
     TOKEN=${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN }}
-    REPO_OWNER=jlove1234
-    REPO_NAME=your-TEMP-GH-ACTIONS
-    WORKFLOW_NAME=your-nifty50scrap
-
+    REPO_OWNER: jlove1234
+    REPO_NAME: TEMP-GH-ACTIONS
+    WORKFLOW_NAME: nifty50scrap
     curl -X POST \
       -H "Authorization: token $TOKEN" \
       -H "Accept: application/vnd.github.v3+json" \
       -d "{\"ref\":\"main\"}" \
       "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/actions/workflows/$WORKFLOW_NAME/dispatches"
+

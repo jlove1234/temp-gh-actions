@@ -96,6 +96,6 @@ jobs:
 
 
    - name: Trigger Another Workflow
-        uses: srt32/workflow-dispatch@v1
-        with:
-          workflow: nifty50scrape2
+     uses: srt32/workflow-dispatch@v1
+     with:
+       workflow: nifty50scrape2

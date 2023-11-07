@@ -101,7 +101,7 @@ jobs:
        TOKEN=${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN }}
        REPO_OWNER: jlove1234
        REPO_NAME: TEMP-GH-ACTIONS
-       WORKFLOW_NAME: nifty50scrap
+       WORKFLOW_NAME: nifty50scrape
        curl -X POST \
         -H "Authorization: token $TOKEN" \
         -H "Accept: application/vnd.github.v3+json" \

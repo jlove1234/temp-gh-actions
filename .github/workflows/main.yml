@@ -30,11 +30,12 @@ jobs:
           r-${{ runner.os }}-
 
     # Install R packages
-    - name: Install packages
-      run: |
-        R -e 'install.packages("tidyverse")'
-        R -e 'install.packages("data.table")'
-        R -e 'install.packages("rvest")'
+# Install R packages
+     - name: Install packages
+       run: |
+         R -e 'install.packages("tidyverse", repos="https://cran.rstudio.com/")'
+         R -e 'install.packages("data.table", repos="https://cran.rstudio.com/")'
+         R -e 'install.packages("rvest", repos="https://cran.rstudio.com/")'
 
     # Continue with the rest of your workflow steps
     - name: Check out repository

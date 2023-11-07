@@ -96,10 +96,10 @@ jobs:
        username: github-actions
 
    - trigger_workflow:
-     needs: autoscrape
-     runs-on: macos-latest
-     steps:
-       - name: Trigger This Workflow Again
-         uses: srt32/workflow-dispatch@v1
-         with:
-           workflow: ${{ github.workflow }}
+       needs: autoscrape
+       runs-on: macos-latest
+       steps:
+         - name: Trigger This Workflow Again
+           uses: srt32/workflow-dispatch@v1
+           with:
+             workflow: ${{ github.workflow }}

@@ -1,4 +1,4 @@
- # Hourly scrapingg
+# Hourly scrapingg
 name: nifty50scrape
 
 on:
@@ -30,12 +30,11 @@ jobs:
           r-${{ runner.os }}-
 
     # Install R packages
-# Install R packages
-     - name: Install packages
-       run: |
-         R -e 'install.packages("tidyverse", repos="https://cran.rstudio.com/")'
-         R -e 'install.packages("data.table", repos="https://cran.rstudio.com/")'
-         R -e 'install.packages("rvest", repos="https://cran.rstudio.com/")'
+    - name: Install packages
+      run: |
+        R -e 'install.packages("tidyverse", repos="https://cran.rstudio.com/")'
+        R -e 'install.packages("data.table", repos="https://cran.rstudio.com/")'
+        R -e 'install.packages("rvest", repos="https://cran.rstudio.com/")'
 
     # Continue with the rest of your workflow steps
     - name: Check out repository
@@ -81,7 +80,7 @@ jobs:
     - name: Scrape city district 5 for map
       run: Rscript city_district5_map.R
 
- # Add new files in data folder, commit along with other modified files, push
+    # Add new files in the data folder, commit along with other modified files, push
     - name: Commit files
       run: |
         git config --local user.name actions-user

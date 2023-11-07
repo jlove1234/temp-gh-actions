@@ -82,11 +82,13 @@ jobs:
    - name: Scrape city district 5 for map
      run: Rscript city_district5_map.R
 
-   - trigger_workflow:
-       needs: autoscrape
-       runs-on: macos-latest
-       steps:
-         - name: Trigger This Workflow Again
-           uses: srt32/workflow-dispatch@v1
-           with:
-             workflow: ${{ github.workflow }}
+   - name: Commit files
+        run: |
+          git config --local user.name actions-user
+          git config --local user.email "actions@github.com"
+          git add data/*
+          git commit -am "GH ACTION Headlines $(date)"
+          git push origin main
+        env:
+          REPO_KEY: ${{secrets.GITHUB_TOKEN}}
+          username: github-actions

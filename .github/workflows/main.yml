@@ -4,8 +4,9 @@ name: nifty50scrape
 
 # Controls when the action will run.
 on:
- schedule:
-    - cron: '*/5 * * * *'
+ push:
+   branches:
+     - main
 
 
 jobs:
@@ -46,3 +47,65 @@ jobs:
 
    - name: Scrape school board at large map
      run: Rscript SBatlargemapscrape.R
+
+
+   - name: Scrape school board district 2
+     run: Rscript SBD2mapscrape.R
+
+
+   - name: Scrape school board district 3
+     run: Rscript SBD3mapscrape.R
+
+
+   - name: Scrape school referendum Q1
+     run: Rscript SRQ1mapscrape.R
+
+
+   - name: Scrape school referendum Q2
+     run: Rscript SRQ2mapscrape.R
+
+
+   - name: Scrape city at large for map
+     run: Rscript city_atlarge_map.R
+
+
+   - name: Scrape city district 1 for map
+     run: Rscript city_district1_map.R
+
+
+   - name: Scrape city district 3 for map
+     run: Rscript city_district3_map.R
+
+
+   - name: Scrape city district 4 for map
+     run: Rscript city_district4_map.R
+  
+   - name: Scrape city district 5 for map
+     run: Rscript city_district5_map.R
+
+
+# Add new files in data folder, commit along with other modified files, push
+   - name: Commit files
+     run: |
+       git config --local user.name actions-user
+       git config --local user.email "actions@github.com"
+       git add data/*
+       git commit -am "GH ACTION Headlines $(date)"
+       git push origin main
+     env:
+       REPO_KEY: ${{secrets.GITHUB_TOKEN}}
+       username: github-actions
+
+# Trigger Another Workflow step
+- name: Trigger Another Workflow
+  run: |
+    TOKEN=${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN }}
+    REPO_OWNER=jlove1234
+    REPO_NAME=your-TEMP-GH-ACTIONS
+    WORKFLOW_NAME=your-nifty50scrap
+
+    curl -X POST \
+      -H "Authorization: token $TOKEN" \
+      -H "Accept: application/vnd.github.v3+json" \
+      -d "{\"ref\":\"main\"}" \
+      "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/actions/workflows/$WORKFLOW_NAME/dispatches"

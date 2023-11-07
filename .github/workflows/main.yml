@@ -82,19 +82,6 @@ jobs:
    - name: Scrape city district 5 for map
      run: Rscript city_district5_map.R
 
-
-# Add new files in data folder, commit along with other modified files, push
-   - name: Commit files
-     run: |
-       git config --local user.name actions-user
-       git config --local user.email "actions@github.com"
-       git add data/*
-       git commit -am "GH ACTION Headlines $(date)"
-       git push origin main
-     env:
-       REPO_KEY: ${{secrets.GITHUB_TOKEN}}
-       username: github-actions
-
    - trigger_workflow:
        needs: autoscrape
        runs-on: macos-latest

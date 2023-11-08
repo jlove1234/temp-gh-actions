@@ -3,33 +3,45 @@ library(tidyr)
 library(dplyr)
 library(data.table)
 
-
-# Read the HTML content of the website
+# Read the HTML content of the website https://electionresults.sos.mn.gov/Results/Index?ersElectionId=156&scenario=ResultsByPrecinctCrosstab&OfficeInElectionId=33119&QuestionId=0
 webpage <- read_html("https://electionresults.sos.mn.gov/Results/Index?ersElectionId=157&scenario=ResultsByPrecinctCrosstab&OfficeInElectionId=33119&QuestionId=0")
+table_node <- html_nodes(webpage, "table") 
 
-# Extract the table content
-table_content <- webpage %>%
-  html_table(fill = TRUE) %>%
-  .[[3]]  # Assuming the table you need is the third one
+# Extract the table content 
+table_content <- html_table(table_node)[[3]] 
 
-# Remove the last row
-table_content <- table_content[-nrow(table_content), ]
+# Remove last row
+table_content <- table_content %>% filter(row_number() <= n()-1)
 
-# Clean column names
+table_content[] <- lapply(table_content, function(cell) {
+  sub("St. Louis: ", "", cell)
+})
+
+table_content[] <- lapply(table_content, function(cell) {
+  sub("ISD #709 - ", "", cell)
+})
+
+columns_to_clean <- colnames(table_content)[-1]  # Exclude the first column
+
+# Loop through each column and apply data cleaning and conversion
+for (col_name in columns_to_clean) {
+  table_content[[col_name]] <- as.numeric(gsub("[^0-9.]", "", table_content[[col_name]]))
+}
+
+#Get rid of NP at the beginning of every name
 colnames(table_content) <- gsub("NP", "", colnames(table_content))
-colnames(table_content) <- gsub("ISD #709 - ", "", colnames(table_content))
 
-# Convert columns to integers
-cols_to_convert <- 2:ncol(table_content)  # Exclude the first column
-table_content[cols_to_convert] <- lapply(table_content[cols_to_convert], as.integer)
+table_content$VoteTotal <- rowSums(table_content[, -1])  # Exclude the first column
 
 # Calculate the percentage for each cell based on the "VoteTotal" column
-table_content <- table_content %>%
-  mutate(across(starts_with("Col"), ~ifelse(is.na(.), 0, .))) %>%
-  rowwise() %>%
-  mutate(VoteTotal = sum(c_across(starts_with("Col")))) %>%
-  ungroup() %>%
-  mutate(across(starts_with("Col"), ~(. / VoteTotal) * 100, .names = "Col_{.col}_Percentage"))
+for (col in 2:(ncol(table_content) - 1)) {
+  new_col_name <- paste0(names(table_content)[col], "_Percentage")
+  table_content[, new_col_name] <- (table_content[, col] / table_content$VoteTotal) * 100
+}
 
-# Write the table to a CSV file
+table_content <- table_content %>%
+  mutate(across(everything(), ~ifelse(. == "NaN", 0, .), .names = "{.col}_New"))
+
+
+# Write the table to the CSV file
 write.csv(table_content, "data/table_real.csv", row.names = FALSE)

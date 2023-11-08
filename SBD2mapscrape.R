@@ -23,15 +23,15 @@ table_content[] <- lapply(table_content, function(cell) {
   sub("ISD #709 - ", "", cell)
 })
 
+columns_to_clean <- colnames(table_content)[-1]  # Exclude the first column
+
+# Loop through each column and apply data cleaning and conversion
+for (col_name in columns_to_clean) {
+  table_content[[col_name]] <- as.numeric(gsub("[^0-9.]", "", table_content[[col_name]]))
+}
+
+#Get rid of NP at the beginning of every name
 colnames(table_content) <- gsub("NP", "", colnames(table_content))
-
-# Assuming your data frame is named "table_content"
-
-# Identify the columns you want to convert to integers
-cols_to_convert <- 2:ncol(table_content)  # Exclude the first column
-
-# Convert the selected columns to integers
-table_content[cols_to_convert] <- lapply(table_content[cols_to_convert], as.integer)
 
 table_content$VoteTotal <- rowSums(table_content[, -1])  # Exclude the first column
 
